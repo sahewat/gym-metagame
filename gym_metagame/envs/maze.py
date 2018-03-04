@@ -2,6 +2,7 @@ import numpy as np
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
+from gym import spaces
 import matplotlib.pyplot as plt
 
 def random_map(map_shape=(16,16)):
@@ -45,6 +46,7 @@ class GridEnv(gym.Env):
         self.position = [0,0]
         self.end_state = [-1,-1]
         self.path = [self.start_state]
+        self.action_space = spaces.Discrete(4)
 
     def _move(self, row, col, a):
             ncol = nrow = self.state.shape[0]
@@ -76,7 +78,6 @@ class GridEnv(gym.Env):
         new_position = self._move(*self.position, action)
         #current_map[new_position[0], new_position[1]] = 0
         if self.state[new_position[1], new_position[0]] == 1:
-            print(new_position)
             new_position = self.position
             assert new_position == self.position
         self.path.append(new_position)
@@ -84,7 +85,6 @@ class GridEnv(gym.Env):
         self.position = new_position
         if self.state[new_position[0], new_position[1]] == 3:
             complete = True
-            print("DONE")
         else:
             complete = False
 
